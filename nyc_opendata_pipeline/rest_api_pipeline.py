@@ -1,4 +1,5 @@
 import dlt
+import duckdb
 from dlt.sources.rest_api import rest_api_source
 from dlt.sources.helpers.rest_client.paginators import OffsetPaginator
 from dlt.sources.helpers.rest_client.auth import APIKeyAuth
@@ -44,7 +45,7 @@ def load_nyc_311_service_requests():
 
     pipeline = dlt.pipeline(
         pipeline_name="rest_api_nyc_311_service_requests",
-        destination="snowflake",
+        destination="duckdb",
         dataset_name="nyc_311_service_requests",
     )
 
