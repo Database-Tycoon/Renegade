@@ -9,5 +9,8 @@ secrets.toml
 # ignore duckdb
 *.duckdb
 *.wal
+
+#folders
 .cache/
 logs/
+datalake/
