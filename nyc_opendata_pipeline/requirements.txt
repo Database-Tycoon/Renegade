@@ -38,6 +38,7 @@ pillow==10.4.0
 platformdirs==4.3.6
 ply==3.11
 protobuf==5.28.2
+psutil==6.1.0
 pyarrow==17.0.0
 pycparser==2.22
 pydeck==0.9.1
