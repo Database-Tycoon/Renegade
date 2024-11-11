@@ -21,7 +21,7 @@ def load_nyc_311_service_requests():
                     offset=0,
                     # if I don't set maximum_offset, then dlt keeps going until blank value returned. 
                     # for testing, you can do something like: 
-                    maximum_offset=1000,
+                    # maximum_offset=1000,
                     total_path=None,
                     offset_param="$offset",
                     limit_param="$limit",
@@ -48,6 +48,7 @@ def load_nyc_311_service_requests():
         pipeline_name="nyc_open_data",
         destination="duckdb",
         dataset_name="service_requests",
+        progress="log"
     )
 
     load_info = pipeline.run(source)
