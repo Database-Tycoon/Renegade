@@ -1,2 +1,3 @@
 .venv
 .ruff*
+.DS_Store
