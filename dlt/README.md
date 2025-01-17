@@ -9,7 +9,11 @@ source .venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-3. Configure Secrets:
+3. Navigate in to the `dlt` folder:
+```
+cd dlt
+```
+4. Configure Secrets:
    - Create a `secrets.toml` file in the `.dlt` directory.
    - Add the following configuration to the `secrets.toml` file:
      ```toml
@@ -28,11 +32,11 @@ pip install -r requirements.txt
      aws_secret_access_key = "YOUR_AWS_SECRET_ACCESS_KEY"
 
 
-4. Run the pipeline. If you want to run it for testing purposes, modify the `maximum_offset` to limit the data for pagination. 
+5. Run the pipeline. If you want to run it for testing purposes, modify the `maximum_offset` to limit the data for pagination. 
 ```
 python nyc_open_data_pipeline.py
 ```
-5. Check pipeline info:
+6. Check pipeline info:
 ```
 dlt pipeline nyc_open_data_pipeline info
 ``` 
