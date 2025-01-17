@@ -1,16 +1,10 @@
 # ignore secrets, virtual environments and typical python compilation artifacts
 secrets.toml
 # ignore basic python artifacts
-.venv
-.ruff*
+.env
 **/__pycache__/
 **/*.py[cod]
 **/*$py.class
 # ignore duckdb
 *.duckdb
 *.wal
-
-#folders
-.cache/
-logs/
-datalake/
