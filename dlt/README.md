@@ -16,6 +16,7 @@ pip install -r requirements.txt
      # put your secret values and credentials here. do not share this file and do not push it to github
 
      [sources.rest_api]
+     # you don't need these API credentials for dev, but there is a possiblity your IP gets restricted with too many GET requests
      nyc_open_data_api_key_id = "YOUR_API_KEY"
      nyc_open_data_api_key_secret = "YOUR_API_SECRET"
 
@@ -27,7 +28,7 @@ pip install -r requirements.txt
      aws_secret_access_key = "YOUR_AWS_SECRET_ACCESS_KEY"
 
 
-4. Run the pipeline. If you want to run it for testing purposes, modify the `maximum_offset` to limit the data for pagination (line 24 in `rest_api_pipeline.py`). 
+4. Run the pipeline. If you want to run it for testing purposes, modify the `maximum_offset` to limit the data for pagination. 
 ```
 python nyc_open_data_pipeline.py
 ```
