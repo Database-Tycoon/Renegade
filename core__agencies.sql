@@ -15,10 +15,26 @@ MODEL (
    )
 );
 
+with resolution_last_3_months as (
+
+    select
+        agency
+        , median(closed_date - created_date) as median_days_to_close
+
+    from DBNAME.source__311_service_requests
+    where closed_date >= current_date - interval '3 months'
+
+)
+
 select
     agency
-    , agency_name
+    , agency_name -- confirm bug doesn't cause fanout
+    , coalesce(median_days_to_close, 'unknown') as median_days_to_close
+    , min(created_date) as first_complaint_date
+    , max(created_date) as most_recent_complaint_date
+    , count(*) over (partition by agency) as total_complaints
 
 from DBNAME.source__311_service_requests
-
+left join resolution_last_3_months on source__311_service_requests.agency = resolution_last_3_months.agency
+group by 1, 2
 
