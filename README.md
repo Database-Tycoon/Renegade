@@ -21,11 +21,6 @@ cd dlt
      ```toml
      # put your secret values and credentials here. do not share this file and do not push it to github
 
-     [sources.rest_api]
-     # you don't need these API credentials for dev, but there is a possiblity your IP gets restricted with too many GET requests
-     nyc_open_data_api_key_id = "YOUR_API_KEY"
-     nyc_open_data_api_key_secret = "YOUR_API_SECRET"
-
      [destination.filesystem]
      bucket_url = "s3://proj-renegade" 
 
