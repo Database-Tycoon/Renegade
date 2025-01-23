@@ -7,7 +7,7 @@ MODEL (
   name staging.service_requests,
   kind INCREMENTAL_BY_UNIQUE_KEY (
     unique_key unique_key
-  )
+  ),
   cron '@daily',
   grain unique_key,
   description 'One row per service request to 311, from NYC Open Data Project',
