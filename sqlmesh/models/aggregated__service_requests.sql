@@ -11,7 +11,8 @@ MODEL(
     kind FULL,
     start '2010-01-01',
     cron '@daily',
-    grain (complaint_month, agency)
+    grain (complaint_month, agency),
+    description 'Aggregated request information by agency'
 );
 
 with requests as (
@@ -20,17 +21,33 @@ with requests as (
 
 )
 
+, total_types as (
+
+    select
+        agency
+        , date_trunc('month', created_date) as request_month
+        , complaint_type
+        , borough
+        , count(*) as total_requests
+
+    from requests
+    group by all
+
+)
+
 , metrics as (
 
     select
-        date_trunc('month', created_date) as complaint_month
-        , agency
---        , closed_ratio
---        , top_resolved_type
---        , top_unresolved_type
-        , count(*) as total_complaints
+        date_trunc('month', requests.created_date) as request_month
+        , requests.agency
+        , max_by(total_types.complaint_type, total_requests) as top_complaint_type
+        , max_by(total_types.borough, total_requests) as top_complaint_origination_borough
+        , sum(case when requests.status = 'Closed' then 1.0 else 0.0 end) / count(*) as overall_close_ratio
+        , count(*) as total_requests
 
     from requests
+    left join total_types on requests.agency = total_types.agency
+        and date_trunc('month', requests.created_date) = total_types.request_month
     group by all
 
 )
