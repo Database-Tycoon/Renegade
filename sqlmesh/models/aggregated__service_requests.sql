@@ -16,7 +16,7 @@ MODEL(
 
 with requests as (
 
-    select * from staging.source__311_service_requests
+    select * from staging.service_requests
 
 )
 

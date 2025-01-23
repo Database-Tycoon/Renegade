@@ -31,7 +31,7 @@ with resolution_last_3_months as (
         agency
         , median(closed_date - created_date) as median_days_to_close
 
-    from staging.source__311_service_requests
+    from staging.service_requests
     where closed_date >= current_date - interval '3 months'
     group by 1
 
@@ -41,12 +41,12 @@ select
     requests.agency
     , requests.agency_name -- confirm bug doesn't cause fanout
     -- check data type (below) to determine what to coalesce null into
-    , coalesce(resolution_last_3_months.median_days_to_close, null) as median_days_to_close
+    , coalesce(resolution_last_3_months.median_days_to_close, 'unknown') as median_days_to_close
     , min(requests.created_date) as first_complaint_date
     , max(requests.created_date) as most_recent_complaint_date
     , count(*) over (partition by requests.agency) as total_complaints
 
-from staging.source__311_service_requests as requests
+from staging.service_requests as requests
 left join resolution_last_3_months on requests.agency = resolution_last_3_months.agency
 group by 1, 2, 3
 

@@ -4,7 +4,7 @@
 */
 
 MODEL (
-  name staging.311_service_requests,
+  name staging.service_requests,
   kind FULL,
   cron '@daily',
   grain unique_key,
