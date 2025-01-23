@@ -1,11 +1,14 @@
-/* revisit kind, incremental could make sense */
+/* revisit kind, incremental could make sense
+   This model is intended to stage and do basic cleaning/casting on the raw API data
+   Some columns were missing from spec (location), need to confirm.
+*/
 
 MODEL (
-  name service_requests.daily_requests,
+  name staging.311_service_requests,
   kind FULL,
   cron '@daily',
   grain unique_key,
-  description 'Description placeholder',
+  description 'One row per service request to 311, from NYC Open Data Project',
   audits (
     not_null(columns := (unique_key, created_date, complaint_type)),
     unique_values(columns := (unique_key))
@@ -58,7 +61,7 @@ MODEL (
   )
 );
 
-with base as (
+with renamed as (
 
     select
         unique_key
@@ -96,13 +99,16 @@ with base as (
         , taxi_company_borough
         , taxi_pick_up_location
         , bridge_highway_name
+        , bridge_highway_direction
         , road_ramp
         , bridge_highway_segment
         , latitude
         , longitude
-        , location
+/* missing in parquet? 
+        , location */
 
-    from service_requests.service_requests
+    --from read_csv('s3://proj-renegade/nyc_open_data/nyc_311_service_requests/311_Service_Requests_from_2010_to_Present_20241108.csv')
+      from read_parquet('s3://proj-renegade/nyc_open_data/nyc_311_service_requests/1737131049.359875.2421389fb8.parquet')
 
 )
 
@@ -113,10 +119,10 @@ with base as (
         unique_key
 
         /* Dates and times */
-        , created_date::date
-        , closed_date::date
-        , due_date::date
-        , resolution_action_updated_date::date
+        , created_date::date as created_date
+        , closed_date::date as closed_date
+        , due_date::date as due_date
+        , resolution_action_updated_date::date as resolution_action_updated_date
 
         /* Attributes */
         , agency
@@ -142,9 +148,9 @@ with base as (
         , borough
         , x_coordinate_state_plane
         , y_coordinate_state_plane
-        , latitude::decimal(9,6)
-        , longitude::decimal(9,6)
-        , location -- look at data type
+        , latitude::decimal(9,6) as latitude
+        , longitude::decimal(9,6) as longitude
+      --  , location -- look at data type
 
         /* Attributes - specific for types of incidents */
         , facility_type
