@@ -45,7 +45,7 @@ MODEL (
     y_coordinate_state_plane='Geo validated, Y coordinate of the incident location.',
     latitude='Geo based Lat of the incident location',
     longitude='Geo based Long of the incident location',
-    location='Combination of the geo based lat & long of the incident location',
+    --location='Combination of the geo based lat & long of the incident location',
 
     facility_type='If available, this field describes the type of city facility associated to the SR',
     landmark='If the incident location is identified as a Landmark the name of the landmark will display here',
@@ -59,7 +59,9 @@ MODEL (
     road_ramp='If the incident location was Bridge/Highway this column differentiates if the issue was on the Road or the Ramp.',
     bridge_highway_segment='Additional information on the section of the Bridge/Highway were the incident took place.',
 
-    open_data_channel_type='Indicates how the SR was submitted to 311. i.e. By Phone, Online, Mobile, Other or Unknown.'
+    open_data_channel_type='Indicates how the SR was submitted to 311. i.e. By Phone, Online, Mobile, Other or Unknown.',
+    _dlt_id='Alphanumeric id value generated for each row in a dlt run.',
+    _dlt_load_id='Decimal value associated with each pipeline load for each dlt pipeline run.'
   )
 );
 
@@ -106,10 +108,20 @@ with renamed as (
         , bridge_highway_segment
         , latitude
         , longitude
-/* missing in parquet? 
-        , location */
+        /* did not see these fields in documentation */
+        , location__latitude
+        , location__longitude
+        , location__human_address
+        , _acomputed_region_efsh_h5xi
+        , _acomputed_region_f5dn_yrer
+        , _acomputed_region_yeji_bk3q
+        , _acomputed_region_92fq_4b7q
+        , _acomputed_region_sbqj_enih
+        , _acomputed_region_7mpf_4k6g
+        /* dlt fields */
+        , _dlt_load_id
+        , _dlt_id
 
-    --from read_csv('s3://proj-renegade/nyc_open_data/nyc_311_service_requests/311_Service_Requests_from_2010_to_Present_20241108.csv')
       from read_parquet('s3://proj-renegade/nyc_open_data/nyc_311_service_requests/1737131049.359875.2421389fb8.parquet')
 
 )
@@ -152,7 +164,15 @@ with renamed as (
         , y_coordinate_state_plane
         , latitude::decimal(9,6) as latitude
         , longitude::decimal(9,6) as longitude
-      --  , location -- look at data type
+        , location__latitude::decimal(9,6) as location__latitude
+        , location__longitude::decimal(9,6) as location__longitude
+        , location__human_address
+        , _acomputed_region_efsh_h5xi
+        , _acomputed_region_f5dn_yrer
+        , _acomputed_region_yeji_bk3q
+        , _acomputed_region_92fq_4b7q
+        , _acomputed_region_sbqj_enih
+        , _acomputed_region_7mpf_4k6g
 
         /* Attributes - specific for types of incidents */
         , facility_type
@@ -169,6 +189,8 @@ with renamed as (
 
         /* Metadata */
         , open_data_channel_type
+        , _dlt_id
+        , _dlt_load_id
 
     from renamed
 

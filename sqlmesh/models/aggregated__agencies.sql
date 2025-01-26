@@ -12,7 +12,7 @@ MODEL (
    grain unique_key,
    description 'This model includes all agencies represented in the 311 service requests dataset',
    audits (
-     not_null(columns := (agency, median_days_to_close)),
+     not_null(columns := (agency, agency_name, median_days_to_close)),
      unique_values(columns := (agency))
     ),
    column_descriptions (
@@ -39,7 +39,8 @@ with resolution_last_3_months as (
 
 select
     requests.agency
-    , requests.agency_name -- confirm bug doesn't cause fanout
+    /* API docs say there is an open bug with agency_name, need to confirm behavior isn't causing fan-out */
+    , requests.agency_name
     , coalesce(resolution_last_3_months.median_days_to_close::text, 'unknown') as median_days_to_close
     , min(requests.created_date) as first_request_date
     , max(requests.created_date) as most_recent_request_date
