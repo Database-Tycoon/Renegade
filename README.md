@@ -42,3 +42,14 @@ or
 dlt pipeline nyc_open_data_pipeline show
 ``` 
 to use streamlit
+
+### Evidence
+[Evidence](https://evidence.dev/) is a lightweight BI tool used to make visualizations.
+
+To view the markdown files in this repo, you need to have run sqlmesh and generated the models/data in your `nycdata.db` file. Once this is done, you can:
+1. `npm install`  
+2. `npm run sources` (in the `evidence/` subdirectory)  
+3. `npm run dev`  
+This should spin up the server at `localhost:3000` and show Evidence's `index.md` page.  
+
+Refer to the [official documentation](https://docs.evidence.dev/) for more information.
