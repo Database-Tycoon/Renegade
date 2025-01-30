@@ -11,8 +11,7 @@ source .venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
-**Recommend using a version of python >= 3.8.1 and < 3.13 for compatibility with `dlt[filesystem]==1.5.0`.**
-`
+**Recommend using a version of python >= 3.8.1 and < 3.13 for compatibility with `dlt[filesystem]==1.5.0`.**  
 3. Navigate in to the `dlt` folder:
 ```
 cd dlt
