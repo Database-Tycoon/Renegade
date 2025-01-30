@@ -4,7 +4,7 @@
 */
 
 MODEL (
-  name staging.service_requests,
+  name staging.stg__service_requests,
   kind INCREMENTAL_BY_UNIQUE_KEY (
     unique_key unique_key
   ),

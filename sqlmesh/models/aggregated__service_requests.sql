@@ -30,7 +30,7 @@ MODEL(
 
 with requests as (
 
-    select * from staging.service_requests
+    select * from staging.stg__service_requests
 
 )
 

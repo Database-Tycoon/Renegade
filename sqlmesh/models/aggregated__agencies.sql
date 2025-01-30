@@ -31,7 +31,7 @@ with resolution_last_3_months as (
         agency
         , median(closed_date - created_date) as median_days_to_close
 
-    from staging.service_requests
+    from staging.stg__service_requests
     where closed_date >= current_date - interval '3 months'
     group by 1
 
@@ -46,7 +46,7 @@ select
     , max(requests.created_date) as most_recent_request_date
     , count(*) as total_requests
 
-from staging.service_requests as requests
+from staging.stg__service_requests as requests
 left join resolution_last_3_months on requests.agency = resolution_last_3_months.agency
 group by 1, 2, 3
 
