@@ -6,11 +6,11 @@ from dlt.sources.helpers.rest_client.paginators import OffsetPaginator
 
 @dlt.source
 def nyc_open_data_source(
-    nyc_open_data_app_token=dlt.secrets["sources.rest_api.nyc_open_data_app_token"],
+    # nyc_open_data_app_token=dlt.secrets["sources.rest_api.nyc_open_data_app_token"],
 ):
-    auth = APIKeyAuth(
-        name="X-App-Token", api_key=nyc_open_data_app_token, location="header"
-    )
+    # auth = APIKeyAuth(
+    #     name="X-App-Token", api_key=nyc_open_data_app_token, location="header"
+    # )
     client = RESTClient(
         base_url="https://data.cityofnewyork.us/resource/",
         paginator=OffsetPaginator(
@@ -22,7 +22,7 @@ def nyc_open_data_source(
             maximum_offset=1000,  # Optional maximum offset value. Limits pagination even without a total count.
             stop_after_empty_page=True,  # Whether pagination should stop when a page contains no result items. Defaults to True.
         ),
-        auth=auth,
+        # auth=auth,
     )
 
     @dlt.resource(write_disposition="replace")
