@@ -14,12 +14,12 @@ def nyc_open_data_source(
     client = RESTClient(
         base_url="https://data.cityofnewyork.us/resource/",
         paginator=OffsetPaginator(
-            limit=1000,  # The maximum number of items to retrieve in each request.
+            limit=10000,  # The maximum number of items to retrieve in each request.
             offset=0,  # The initial offset for the first request. Defaults to 0.
             offset_param="$offset",  # The name of the query parameter used to specify the offset. Defaults to "offset".
             limit_param="$limit",  # The name of the query parameter used to specify the limit. Defaults to "limit".
             total_path=None,  # A JSONPath expression for the total number of items. If not provided, pagination is controlled by maximum_offset and stop_after_empty_page.
-            maximum_offset=1000,  # Optional maximum offset value. Limits pagination even without a total count.
+            maximum_offset=10000,  # Optional maximum offset value. Limits pagination even without a total count.
             stop_after_empty_page=True,  # Whether pagination should stop when a page contains no result items. Defaults to True.
         ),
         # auth=auth,
@@ -27,6 +27,9 @@ def nyc_open_data_source(
 
     @dlt.resource(write_disposition="replace")
     def nyc_311_service_requests():
+        """
+        This resource is NOT being used currently. 
+        """
         for page in client.paginate("erm2-nwe9"):
             yield page
 
