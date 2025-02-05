@@ -11,6 +11,8 @@ source .venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+**Recommend using a version of python >= 3.8.1 and < 3.13 for compatibility with `dlt[filesystem]==1.5.0`.**  
+
 3. Navigate in to the `dlt` folder:
 ```
 cd dlt
@@ -41,7 +43,7 @@ or
 ```
 dlt pipeline nyc_open_data_pipeline show
 ``` 
-to use streamlit
+to use streamlit  
 
 ### Evidence
 [Evidence](https://evidence.dev/) is a lightweight BI tool used to make visualizations.

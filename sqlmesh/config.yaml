@@ -1,0 +1,12 @@
+gateways:
+  local:
+    connection:
+      type: duckdb
+      database: nycdata.db
+      extensions: ['httpfs']
+
+default_gateway: local
+
+model_defaults:
+  dialect: duckdb
+  start: 2020-01-01 # TODO update
