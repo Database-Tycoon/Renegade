@@ -20,6 +20,7 @@ cd dlt
 ```
 cp .dlt/secrets.example .dlt/secrets.toml
 ```
+- Make sure the file is located in `Renegade/dlt/.dlt/secrets.toml`.
 - Add secrets like aws credentials, nyc open data app token, etc.
 - You can change the `bucket_url` to your local directory for testing purposes. In which case, you don't need to specify the aws credentials.
 - You also don't need to specify the nyn api token for development. You only need it to limit the API call limit.
