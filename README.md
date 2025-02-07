@@ -29,8 +29,13 @@ cp .dlt/secrets.example .dlt/secrets.toml
 
 
 5. Run the pipeline. If you want to run it for testing purposes, modify the `maximum_offset` to limit the data for pagination. 
+- By default, the following command will run the pipeline in incremental mode.
 ```
 python nyc_open_data_pipeline.py
+```
+- If you want to run the pipeline in historical mode, to backfill historical data (up to the time of running the command), you can use the following command:
+```
+python nyc_open_data_pipeline.py --backfill
 ```
 6. Check pipeline info:
 ```
