@@ -77,6 +77,7 @@ def load_nyc_open_data_source(backfill=False):
             layout="{table_name}/historical/loaded_on_{YYYY}_{MM}_{DD}/{load_id}.{file_id}.{ext}"
             if backfill
             else "{table_name}/incremental/{YYYY}/{MM}/{load_id}.{file_id}.{ext}",
+            timezone="America/New_York"  # dataset_timezone
         ),
         dataset_name="nyc_open_data",
         progress="log",
