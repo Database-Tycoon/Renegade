@@ -1,3 +1,5 @@
 .venv
 .ruff*
 .DS_Store
+.cubestore
+cube/.env
