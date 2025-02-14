@@ -2,7 +2,6 @@ import dlt
 from dlt.sources.helpers.rest_client import RESTClient
 from dlt.sources.helpers.rest_client.auth import APIKeyAuth
 from dlt.sources.helpers.rest_client.paginators import OffsetPaginator
-from dlt.destinations import filesystem
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import argparse
@@ -12,6 +11,9 @@ import argparse
 def nyc_open_data_source(
     # nyc_open_data_app_token=dlt.secrets["sources.rest_api.nyc_open_data_app_token"],
     backfill=False,
+    start_date=None,
+    end_date=None,
+    current_month=False,
 ):
     # auth = APIKeyAuth(
     #     name="X-App-Token", api_key=nyc_open_data_app_token, location="header"
@@ -33,7 +35,7 @@ def nyc_open_data_source(
     @dlt.resource(write_disposition="replace")
     def nyc_311_service_requests():
         """
-        This resource is NOT being used currently. 
+        This resource is NOT being used currently.
         """
         for page in client.paginate("erm2-nwe9"):
             yield page
@@ -45,23 +47,32 @@ def nyc_open_data_source(
         for conditions violating the New York City Housing Maintenance Code (HMC)
         or the New York State Multiple Dwelling Law (MDL).
 
-        This resource supports two loading modes:
-        - Incremental: When backfill=False (default), only loads complaints from the current month
-          based on received_date, problem_status_date, or complaint_status_date
-        - Historical: When backfill=True, loads the complete historical dataset
+        This resource supports these loading modes:
+        - Current Month: When --current-month flag is used, loads complaints that have been updated or newly added during the current month
+        - Date Range: When --start-date and --end-date are provided, loads data that have been updated or newly added within the specified date range
+        - Historical: When --backfill flag is used, loads the complete historical dataset
         """
 
         params = {}
-        if not backfill:
+        if backfill:
+            pass  # No filtering needed for backfill
+        elif current_month:
             current_time = datetime.now(ZoneInfo("America/New_York"))
-            current_month = current_time.strftime(
-                "%Y-%m"
-            )  # This will output like "2024-02"
-
+            current_month_str = current_time.strftime("%Y-%m")
             params["$where"] = (
-                f"date_trunc_ym(received_date) = '{current_month}' or "
-                f"date_trunc_ym(problem_status_date) = '{current_month}' or "
-                f"date_trunc_ym(complaint_status_date) = '{current_month}'"
+                f"date_trunc_ym(received_date) = '{current_month_str}' OR "
+                f"date_trunc_ym(problem_status_date) = '{current_month_str}' OR "
+                f"date_trunc_ym(complaint_status_date) = '{current_month_str}'"
+            )
+        elif start_date and end_date:
+            params["$where"] = (
+                f"(date_trunc_ymd(received_date) >= '{start_date}' AND date_trunc_ymd(received_date) <= '{end_date}') OR "
+                f"(date_trunc_ymd(problem_status_date) >= '{start_date}' AND date_trunc_ymd(problem_status_date) <= '{end_date}') OR "
+                f"(date_trunc_ymd(complaint_status_date) >= '{start_date}' AND date_trunc_ymd(complaint_status_date) <= '{end_date}')"
+            )
+        else:
+            raise ValueError(
+                "Must specify either --backfill, --current-month, or both --start-date and --end-date"
             )
 
         for page in client.paginate("ygpa-z7cr", params=params):
@@ -70,14 +81,24 @@ def nyc_open_data_source(
     return [hpd_complaints]
 
 
-def load_nyc_open_data_source(backfill=False):
+def load_nyc_open_data_source(
+    backfill=False, start_date=None, end_date=None, current_month=False
+):
     pipeline = dlt.pipeline(
         pipeline_name="nyc_open_data_pipeline",
-        destination='filesystem',
+        destination="filesystem",
         dataset_name="nyc_open_data",
         progress="log",
     )
-    pipeline.run(nyc_open_data_source(backfill=backfill), loader_file_format="parquet")
+    pipeline.run(
+        nyc_open_data_source(
+            backfill=backfill,
+            start_date=start_date,
+            end_date=end_date,
+            current_month=current_month,
+        ),
+        loader_file_format="parquet",
+    )
 
 
 if __name__ == "__main__":
@@ -87,6 +108,34 @@ if __name__ == "__main__":
         action="store_true",
         help="Run in backfill mode to load all historical data",
     )
+    parser.add_argument(
+        "--current-month",
+        action="store_true",
+        help="Load data for the current month",
+    )
+    parser.add_argument(
+        "--start-date",
+        help="Start date for date range ingestion (format: YYYY-MM-DD)",
+    )
+    parser.add_argument(
+        "--end-date",
+        help="End date for date range ingestion (format: YYYY-MM-DD)",
+    )
     args = parser.parse_args()
 
-    load_nyc_open_data_source(backfill=args.backfill)
+    if (
+        sum(
+            [args.backfill, args.current_month, bool(args.start_date and args.end_date)]
+        )
+        != 1
+    ):
+        raise ValueError(
+            "Must specify exactly one mode: --backfill, --current-month, or both --start-date and --end-date"
+        )
+
+    load_nyc_open_data_source(
+        backfill=args.backfill,
+        start_date=args.start_date,
+        end_date=args.end_date,
+        current_month=args.current_month,
+    )
