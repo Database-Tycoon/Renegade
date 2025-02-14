@@ -74,9 +74,9 @@ def load_nyc_open_data_source(backfill=False):
     pipeline = dlt.pipeline(
         pipeline_name="nyc_open_data_pipeline",
         destination=filesystem(
-            layout="{table_name}/historical/loaded_on_{YYYY}_{MM}_{DD}/{load_id}.{file_id}.{ext}"
+            layout="{table_name}/historical_data_to_{YYYY}_{MM}_{DD}_{load_id}_{file_id}.{ext}"
             if backfill
-            else "{table_name}/incremental/{YYYY}/{MM}/{load_id}.{file_id}.{ext}",
+            else "{table_name}/incremental_data_from_{YYYY}_{MM}_01_to_{YYYY}_{MM}_{DD}_{load_id}_{file_id}.{ext}",
             timezone="America/New_York"  # dataset_timezone
         ),
         dataset_name="nyc_open_data",
