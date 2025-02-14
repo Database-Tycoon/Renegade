@@ -38,7 +38,7 @@ def nyc_open_data_source(
         for page in client.paginate("erm2-nwe9"):
             yield page
 
-    @dlt.resource(write_disposition="append")
+    @dlt.resource(write_disposition="append", table_format="iceberg")
     def hpd_complaints():
         """
         The Department of Housing Preservation and Development (HPD) records complaints made by the public
@@ -73,12 +73,7 @@ def nyc_open_data_source(
 def load_nyc_open_data_source(backfill=False):
     pipeline = dlt.pipeline(
         pipeline_name="nyc_open_data_pipeline",
-        destination=filesystem(
-            layout="{table_name}/historical_data_to_{YYYY}_{MM}_{DD}_{load_id}_{file_id}.{ext}"
-            if backfill
-            else "{table_name}/incremental_data_from_{YYYY}_{MM}_01_to_{YYYY}_{MM}_{DD}_{load_id}_{file_id}.{ext}",
-            timezone="America/New_York"  # dataset_timezone
-        ),
+        destination='filesystem'
         dataset_name="nyc_open_data",
         progress="log",
     )
