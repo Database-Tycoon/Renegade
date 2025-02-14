@@ -73,7 +73,7 @@ def nyc_open_data_source(
 def load_nyc_open_data_source(backfill=False):
     pipeline = dlt.pipeline(
         pipeline_name="nyc_open_data_pipeline",
-        destination='filesystem'
+        destination='filesystem',
         dataset_name="nyc_open_data",
         progress="log",
     )
