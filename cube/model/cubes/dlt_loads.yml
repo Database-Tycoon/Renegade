@@ -1,0 +1,32 @@
+cubes:
+  - name: dlt_loads
+    sql_table: nyc_open_data._dlt_loads
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: load_id
+        sql: load_id
+        type: string
+
+      - name: schema_name
+        sql: schema_name
+        type: string
+
+      - name: schema_version_hash
+        sql: schema_version_hash
+        type: string
+
+      - name: inserted_at
+        sql: inserted_at
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+    pre_aggregations:
+      # Pre-aggregation definitions go here.
+      # Learn more in the documentation: https://cube.dev/docs/caching/pre-aggregations/getting-started
+

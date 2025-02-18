@@ -1,0 +1,148 @@
+cubes:
+  - name: hpd_complaints
+    sql_table: nyc_open_data.hpd_complaints
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: problem_id
+        sql: problem_id
+        type: string
+
+      - name: complaint_id
+        sql: complaint_id
+        type: string
+
+      - name: building_id
+        sql: building_id
+        type: string
+
+      - name: borough
+        sql: borough
+        type: string
+
+      - name: house_number
+        sql: house_number
+        type: string
+
+      - name: street_name
+        sql: street_name
+        type: string
+
+      - name: post_code
+        sql: post_code
+        type: string
+
+      - name: block
+        sql: block
+        type: string
+
+      - name: lot
+        sql: lot
+        type: string
+
+      - name: apartment
+        sql: apartment
+        type: string
+
+      - name: community_board
+        sql: community_board
+        type: string
+
+      - name: unit_type
+        sql: unit_type
+        type: string
+
+      - name: space_type
+        sql: space_type
+        type: string
+
+      - name: type
+        sql: type
+        type: string
+
+      - name: major_category
+        sql: major_category
+        type: string
+
+      - name: minor_category
+        sql: minor_category
+        type: string
+
+      - name: problem_code
+        sql: problem_code
+        type: string
+
+      - name: complaint_status
+        sql: complaint_status
+        type: string
+
+      - name: problem_status
+        sql: problem_status
+        type: string
+
+      - name: status_description
+        sql: status_description
+        type: string
+
+      - name: problem_duplicate_flag
+        sql: problem_duplicate_flag
+        type: string
+
+      - name: complaint_anonymous_flag
+        sql: complaint_anonymous_flag
+        type: string
+
+      - name: unique_key
+        sql: unique_key
+        type: string
+
+      - name: latitude
+        sql: latitude
+        type: string
+
+      - name: longitude
+        sql: longitude
+        type: string
+
+      - name: council_district
+        sql: council_district
+        type: string
+
+      - name: census_tract
+        sql: census_tract
+        type: string
+
+      - name: bin
+        sql: bin
+        type: string
+
+      - name: bbl
+        sql: bbl
+        type: string
+
+      - name: nta
+        sql: nta
+        type: string
+
+      - name: received_date
+        sql: received_date
+        type: time
+
+      - name: complaint_status_date
+        sql: complaint_status_date
+        type: time
+
+      - name: problem_status_date
+        sql: problem_status_date
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+    pre_aggregations:
+      # Pre-aggregation definitions go here.
+      # Learn more in the documentation: https://cube.dev/docs/caching/pre-aggregations/getting-started
+
