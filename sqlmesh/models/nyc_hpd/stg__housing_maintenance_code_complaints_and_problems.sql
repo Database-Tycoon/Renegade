@@ -43,11 +43,10 @@ MODEL (
 );
 
 with historical as (
-    /* TODO need to point this to an Iceberg table? that handles incremental dlt file loads */
+    /* TODO need to point this to an Iceberg table? that handles incremental dlt file loads
+       currently pointing at one arbitrary load in S3 */
 
-   select * from read_parquet('nyc_hpd_historical_20250208.parquet')
-   /* file moved 
-   -- from read_parquet('s3://proj-renegade/dlt/landing/nyc_open_data/hpd_complaints/historical/loaded_on_2025_02_08/1738986252.467247.df5c3f1fc6.parquet') */
+   select * from read_parquet('s3://proj-renegade/dlt/landing/nyc_open_data/hpd_complaints/data/00000-0-e70d021d-b5b4-4784-9bf0-9076d76f667e.parquet')
 
 )
 
