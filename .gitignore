@@ -3,3 +3,8 @@
 .DS_Store
 .cubestore
 cube/.env
+.cache
+logs
+__pycache__
+*.db
+.evidence

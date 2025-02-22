@@ -56,10 +56,11 @@ to use streamlit
 ### Evidence
 [Evidence](https://evidence.dev/) is a lightweight BI tool used to make visualizations.
 
-To view the markdown files in this repo, you need to have run sqlmesh and generated the models/data in your `nycdata.db` file. Once this is done, you can:
-1. `npm install`  
-2. `npm run sources` (in the `evidence/` subdirectory)  
-3. `npm run dev`  
+To view the markdown files in this repo, you need to:
+1. Have Docker installed and running on your machine.
+2. Have run sqlmesh and generated the models/data in your `nycdata.db` file.
+3. Run `docker compose up evidence` to spin up the server.
+
 This should spin up the server at `localhost:3000` and show Evidence's `index.md` page.  
 
 Refer to the [official documentation](https://docs.evidence.dev/) for more information.
@@ -73,9 +74,8 @@ Renegade already has a cube project folder containing basic configuraitons and m
 
 If you're running the project locally, here's how to get started:
 1. Run the nyc_open_data_pipeline.py script with duckdb as the destination to generate some data in the nyc_open_data_pipeline.duckdb file in the RENEGADE root directory.
-2. run `cd cube` to navigate to the cube directory.
-3. run `docker-compose up` to start the cube server.
-4. navigate to `localhost:4000` in your browser to view the cube dashboard.
+2. run `docker compose up cube` to start the cube server.
+3. navigate to `localhost:4000` in your browser to view the cube dashboard.
 
 And that's it! You can edit the models from the cube dashboard and the changes you make will be reflected in the `cube/model` directory, or you can edit the files directly in `cube/model`.
 

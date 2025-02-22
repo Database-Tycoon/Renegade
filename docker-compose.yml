@@ -1,0 +1,32 @@
+services:
+  cube:
+    image: cubejs/cube:latest
+    ports:
+      - 4000:4000
+      - 15432:15432
+    volumes:
+      - .:/cube/conf
+      - ./cube/model:/cube/model
+      - ./data:/data
+    environment:
+      - CUBEJS_DEV_MODE=true
+      - CUBEJS_DB_TYPE=duckdb
+      - CUBEJS_SCHEMA_PATH=/cube/model
+      - CUBEJS_DB_DUCKDB_DATABASE_PATH=/data/nycdata.db # moved to dedicated data directory
+
+  evidence:
+    image: evidencedev/devenv:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./evidence:/evidence
+      - ./data:/data
+    working_dir: /evidence
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - cube
+
+networks:
+  default:
+    name: renegade-network 
