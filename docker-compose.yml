@@ -7,11 +7,12 @@ services:
     volumes:
       - .:/cube/conf
       - ./cube/model:/cube/model
+      - ./data:/data
     environment:
       - CUBEJS_DEV_MODE=true
       - CUBEJS_DB_TYPE=duckdb
       - CUBEJS_SCHEMA_PATH=/cube/model
-      - CUBEJS_DB_DUCKDB_DATABASE_PATH=nyc_open_data_pipeline.duckdb # path to the database file, change to s3 or local path
+      - CUBEJS_DB_DUCKDB_DATABASE_PATH=/data/nycdata.db # moved to dedicated data directory
 
   evidence:
     image: evidencedev/devenv:latest
@@ -19,7 +20,7 @@ services:
       - "3000:3000"
     volumes:
       - ./evidence:/evidence
-      - ./sqlmesh:/sqlmesh
+      - ./data:/data
     working_dir: /evidence
     environment:
       - NODE_ENV=development
