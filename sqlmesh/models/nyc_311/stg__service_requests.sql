@@ -122,7 +122,7 @@ with renamed as (
         , _dlt_load_id
         , _dlt_id
 
-      from read_parquet('s3://proj-renegade/nyc_open_data/nyc_311_service_requests/1737131049.359875.2421389fb8.parquet')
+      from iceberg_scan(@get_s3_iceberg_file_path('nyc_open_data', 'nyc_311_service_requests'))
 
 )
 
