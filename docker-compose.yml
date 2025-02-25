@@ -24,8 +24,6 @@ services:
     working_dir: /evidence
     environment:
       - NODE_ENV=development
-    depends_on:
-      - cube
 
 networks:
   default:
