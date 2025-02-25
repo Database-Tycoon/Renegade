@@ -38,7 +38,7 @@ def nyc_open_data_source(
         # auth=auth,
     )
 
-    @dlt.resource(write_disposition="replace")
+    @dlt.resource(write_disposition="append", table_format="iceberg")
     def nyc_311_service_requests():
         """
         This resource is NOT being used currently.
