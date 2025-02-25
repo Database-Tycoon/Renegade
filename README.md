@@ -36,17 +36,21 @@
 - You can change the `bucket_url` to your local directory for testing purposes. In which case, you don't need to specify the aws credentials.
 
 5. Run the DLT Pipeline:
+- Navigate to the dlt directory:
+    ```
+    cd dlt
+    ```
 - By default, the following command will run the pipeline in incremental mode:
     ```
-    python dlt/nyc_open_data_pipeline.py --current-month
+    python nyc_open_data_pipeline.py --current-month
     ```
 - For historical data backfill:
     ```
-    python dlt/nyc_open_data_pipeline.py --backfill
+    python nyc_open_data_pipeline.py --backfill
     ```
 - For specific date ranges:
     ```
-    python dlt/nyc_open_data_pipeline.py --start-date YYYY-MM-DD --end-date YYYY-MM-DD
+    python nyc_open_data_pipeline.py --start-date YYYY-MM-DD --end-date YYYY-MM-DD
     ```
 
 6. Check pipeline info:
