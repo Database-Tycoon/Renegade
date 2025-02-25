@@ -5,6 +5,12 @@ from dlt.sources.helpers.rest_client.paginators import OffsetPaginator
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import argparse
+import os
+
+if os.environ.get("APP_ENV") != "prod":
+    from dotenv import load_dotenv
+
+    load_dotenv()
 
 
 @dlt.source
