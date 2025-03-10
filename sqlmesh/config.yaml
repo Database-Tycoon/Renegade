@@ -3,7 +3,7 @@ gateways:
     connection:
       type: duckdb
       database: ../data/nycdata.db
-      extensions: ['httpfs']
+      extensions: ['httpfs','iceberg']
 
 default_gateway: local
 

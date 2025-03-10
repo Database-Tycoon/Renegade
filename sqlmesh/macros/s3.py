@@ -30,10 +30,6 @@ def _setup_duckdb() -> None:
     and creating a persistent secret for S3 access.
     """
     conn = _get_duckdb_connection()
-    conn.sql("INSTALL httpfs;")
-    conn.sql("LOAD httpfs;")
-    conn.sql("INSTALL iceberg;")
-    conn.sql("LOAD iceberg;")
     sql_query = f"""
     CREATE PERSISTENT SECRET IF NOT EXISTS s3_secret (
         TYPE S3,
@@ -131,6 +127,6 @@ def get_s3_iceberg_file_path(
     Environment:
         S3_BUCKET_URL (str): Full S3 bucket URL (e.g. "s3://bucket/prefix")
     """
-    _setup_duckdb()
+    # _setup_duckdb()
     path = _get_latest_metadata_path(data_source, dataset_name)
     return exp.Literal.string(path)
