@@ -5,6 +5,12 @@ from dlt.sources.helpers.rest_client.paginators import OffsetPaginator
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import argparse
+import os
+
+if os.environ.get("APP_ENV") != "prod":
+    from dotenv import load_dotenv
+
+    load_dotenv()
 
 
 @dlt.source
@@ -32,7 +38,7 @@ def nyc_open_data_source(
         # auth=auth,
     )
 
-    @dlt.resource(write_disposition="replace")
+    @dlt.resource(write_disposition="append", table_format="iceberg")
     def nyc_311_service_requests():
         """
         This resource is NOT being used currently.

@@ -7,7 +7,8 @@ annotated-types==0.7.0
 astor==0.8.1
 asttokens==3.0.0
 attrs==24.3.0
-botocore==1.35.93
+boto3==1.35.74
+botocore==1.35.74
 certifi==2024.12.14
 charset-normalizer==3.4.1
 click==8.1.8
@@ -59,6 +60,7 @@ pydantic==2.10.5
 pydantic-core==2.27.2
 pygments==2.19.1
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 pytz==2024.2
 pyyaml==6.0.2
 regex==2024.11.6
