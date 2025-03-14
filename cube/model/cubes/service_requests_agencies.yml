@@ -1,0 +1,9 @@
+cubes:
+  - name: service_requests_agencies
+    sql_table: enriched.aggregated__agencies
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      

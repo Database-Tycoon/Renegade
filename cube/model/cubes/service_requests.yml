@@ -1,0 +1,9 @@
+cubes:
+  - name: service_requests
+    sql_table: enriched.aggregated__service_requests
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      
