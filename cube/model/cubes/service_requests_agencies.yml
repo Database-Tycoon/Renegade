@@ -6,4 +6,44 @@ cubes:
     joins: []
 
     dimensions:
-      
+      - name: agency
+        sql: agency
+        type: string
+        title: Agency Code
+        # primary_key: true
+
+      - name: agency_name
+        sql: agency_name
+        type: string
+        title: Agency Name
+
+      - name: median_days_to_close
+        sql: median_days_to_close
+        type: string
+        title: Median Days to Close
+
+      - name: first_request_date
+        sql: first_request_date
+        type: time
+        title: First Request Date
+
+      - name: most_recent_request_date
+        sql: most_recent_request_date
+        type: time
+        title: Most Recent Request Date
+
+    measures:
+      - name: total_requests
+        sql: total_requests
+        type: sum
+        title: Total Requests
+
+      - name: count
+        type: count
+        title: Count of Agencies
+
+      - name: avg_days_to_close
+        sql: CAST(median_days_to_close AS DECIMAL(10,2))
+        type: avg
+        title: Average Days to Close
+        description: Average of median days to close across agencies
