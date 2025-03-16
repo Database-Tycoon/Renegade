@@ -2,14 +2,13 @@ MODEL (
   name staging.stg__housing_maintenance_code_complaints_and_problems,
   kind full, 
   cron '@daily',
-  grain 'hpd_complaint_id',
+  grain 'problem_id',
   description 'Each row is a problem reported by the complainant to the Department of Housing Preservation and Development (HPD)',
   audits (
-    not_null(columns := (hpd_complaint_id, problem_id, problem_type, major_category, borough)),
-    unique_values(columns := (hpd_complaint_id, problem_id))
+    not_null(columns := (problem_id, problem_type, major_category, borough)),
+    unique_values(columns := (problem_id))
   ),
   column_descriptions (
-    hpd_complaint_id='Unique identifier of a complaint to HPD within the data warehouse',
     received_at='Date when the complaint was received',
     problem_id='Unique identifier of this problem',
     complaint_id='Unique identifier of the complaint this problem is associated with',
@@ -66,11 +65,8 @@ with historical as (
 , reordered as (
 
     select
-        /* Surrogate key */
-        @GENERATE_SURROGATE_KEY(problem_id) as hpd_complaint_id
-
         /* Primary key */
-        , problem_id
+        problem_id
 
         /* Foreign keys and IDs */
         , unique_key

@@ -7,14 +7,10 @@ cubes:
 
     dimensions:
 
-      - name: hpd_complaint_id
-        sql: hpd_complaint_id
-        type: string
-        primary_key: true
-
       - name: problem_id
         sql: problem_id
         type: string
+        primary_key: true
 
       - name: complaint_id
         sql: complaint_id
