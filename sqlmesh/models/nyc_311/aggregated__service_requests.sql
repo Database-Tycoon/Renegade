@@ -13,14 +13,16 @@ MODEL(
     kind FULL,
     start '2010-01-01',
     cron '@weekly',
-    grain (request_month, agency, city_or_borough, complaint_type),
+    grain aggregated_service_requests_id,
     audits (
+      unique_values(columns := (aggregated_service_requests_id)),
       unique_combination_of_columns(columns := (request_month, agency, city_or_borough, complaint_type)),
-      not_null(columns := (request_month, agency, complaint_type)),
+      not_null(columns := (aggregated_service_requests_id, request_month, agency, complaint_type)),
       not_null_non_blocking(columns := (city_or_borough)),
     ),
     description 'Aggregated request information by agency and location rolled up by month',
     column_descriptions (
+      aggregated_service_requests_id='Unique identifier of this model, unique across request_month, agency, city_or_borough, complaint_type',
       city_or_borough='City of incident location. If null, use borough provided by submitter.',
       total_unresolved_requests='Count of unique requests where status is not closed. Includes open, pending, in progress, etc.',
       total_closed_requests='Count of unique requests where status is closed.',
@@ -40,8 +42,8 @@ with requests as (
         date_trunc('month', requests.created_date) as request_month
         , agency
         /* in current data, city is rarely null but borough is never null */
-        , coalesce(city, borough) as city_or_borough
-        , complaint_type
+        , coalesce(requests.city, requests.borough) as city_or_borough
+        , requests.complaint_type
         , sum(case when status != 'Closed' then 1 else 0 end) as total_unresolved_requests
         , sum(case when status = 'Closed' then 1 else 0 end) as total_closed_requests
         , count(*) as total_requests
@@ -51,4 +53,15 @@ with requests as (
 
 )
 
-select * from metrics
+, final as (
+
+    select
+        /* Surrogate key */
+        @GENERATE_SURROGATE_KEY(metrics.request_month, metrics.agency, metrics.city_or_borough, metrics.complaint_type) as aggregated_service_requests_id
+        , metrics.*
+
+    from metrics
+
+)
+
+select * from final

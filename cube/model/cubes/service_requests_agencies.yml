@@ -6,11 +6,17 @@ cubes:
     joins: []
 
     dimensions:
+
+      - name: agency_id
+        sql: agency_id
+        type: string
+        title: Agency ID
+        primary_key: true
+
       - name: agency
         sql: agency
         type: string
         title: Agency Code
-        # primary_key: true
 
       - name: agency_name
         sql: agency_name
@@ -41,9 +47,3 @@ cubes:
       - name: count
         type: count
         title: Count of Agencies
-
-      - name: avg_days_to_close
-        sql: CAST(median_days_to_close AS DECIMAL(10,2))
-        type: avg
-        title: Average Days to Close
-        description: Average of median days to close across agencies

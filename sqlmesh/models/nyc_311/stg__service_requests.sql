@@ -9,13 +9,14 @@ MODEL (
     unique_key unique_key
   ),
   cron '@daily',
-  grain unique_key,
+  grain service_request_id,
   description 'One row per service request to 311, from NYC Open Data Project',
   audits (
-    not_null(columns := (unique_key, created_date, complaint_type)),
-    unique_values(columns := (unique_key))
+    not_null(columns := (service_request_id, unique_key, created_date, complaint_type)),
+    unique_values(columns := (service_request_id, unique_key))
   ),
   column_descriptions (
+    service_request_id='Unique identifier of a Service Request (SR) in the data warehouse',
     unique_key=' Unique identifier of a Service Request (SR) in the open data set',
     created_date='Date SR was created',
     closed_date='Date SR was closed by responding agency',
@@ -129,8 +130,11 @@ with renamed as (
 , final as (
 
     select
+        /* Surrogate key */
+        @GENERATE_SURROGATE_KEY(unique_key) as service_request_id,
+        
         /* Primary key */
-        unique_key
+        , unique_key
 
         /* Dates and times */
         , created_date::date as created_date

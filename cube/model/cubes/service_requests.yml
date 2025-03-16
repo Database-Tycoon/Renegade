@@ -6,6 +6,13 @@ cubes:
     joins: []
 
     dimensions:
+
+      - name: request_id
+        sql: aggregated_service_requests_id
+        type: string
+        title: Aggregated Service Requests ID
+        primary_key: true
+
       - name: request_month
         sql: request_month
         type: time
@@ -41,12 +48,6 @@ cubes:
         sql: total_requests
         type: sum
         title: Total Requests
-
-      - name: resolution_rate
-        sql: CAST(100.0 * ${total_closed_requests} AS DECIMAL(10,2)) / NULLIF(${total_unresolved_requests} + ${total_closed_requests}, 0)
-        type: number
-        format: percent
-        title: Resolution Rate
 
       - name: count
         type: count
