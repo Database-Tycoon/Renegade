@@ -1,1 +1,1 @@
-select * from enriched.aggregated__agencies
+select * from service_requests_agencies;

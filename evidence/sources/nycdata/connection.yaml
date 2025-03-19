@@ -1,8 +1,9 @@
 # This file was automatically generated
-type: duckdb
+type: postgres
 name: nycdata
 options:
-  filename: ../../../data/nycdata.db
-# Advanced Options, you probably don't want to change this
-buildOptions:
-  batchSize: 1000000
+  host: cube
+  port: 15432
+  database: cube
+  ssl: false
+  optional: true

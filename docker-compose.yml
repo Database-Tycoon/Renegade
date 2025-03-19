@@ -20,10 +20,11 @@ services:
       - "3000:3000"
     volumes:
       - ./evidence:/evidence
-      - ./data:/data
     working_dir: /evidence
     environment:
       - NODE_ENV=development
+    depends_on:
+      - cube
 
 networks:
   default:

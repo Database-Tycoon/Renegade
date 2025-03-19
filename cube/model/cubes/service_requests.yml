@@ -1,0 +1,55 @@
+cubes:
+  - name: service_requests
+    sql_table: enriched.aggregated__service_requests
+    data_source: default
+
+    joins: []
+
+    dimensions:
+
+      - name: request_id
+        sql: aggregated_service_requests_id
+        type: string
+        title: Aggregated Service Requests ID
+        primary_key: true
+
+      - name: request_month
+        sql: request_month
+        type: time
+        title: Request Month
+
+      - name: agency
+        sql: agency
+        type: string
+        title: Agency
+
+      - name: city_or_borough
+        sql: city_or_borough
+        type: string
+        title: City or Borough
+
+      - name: complaint_type
+        sql: complaint_type
+        type: string
+        title: Complaint Type
+
+    measures:
+      - name: total_unresolved_requests
+        sql: total_unresolved_requests
+        type: sum
+        title: Total Unresolved Requests
+
+      - name: total_closed_requests
+        sql: total_closed_requests
+        type: sum
+        title: Total Closed Requests
+
+      - name: total_requests
+        sql: total_requests
+        type: sum
+        title: Total Requests
+
+      - name: count
+        type: count
+        title: Count
+      

@@ -9,13 +9,14 @@ MODEL (
    name enriched.aggregated__agencies,
    kind VIEW, 
    cron '@daily',
-   grain unique_key,
+   grain agency_id,
    description 'This model includes all agencies represented in the 311 service requests dataset',
    audits (
-     not_null(columns := (agency, agency_name, median_days_to_close)),
-     unique_values(columns := (agency))
+     not_null(columns := (agency_id, agency, agency_name, median_days_to_close)),
+     unique_values(columns := (agency_id, agency))
     ),
    column_descriptions (
+       agency_id='Unique identifier of this model, unique across all agencies',
        agency='Acronym of responding City Government Agency',
        agency_name='Full Agency name of responding City Government Agency',
        median_days_to_close='For closed complaints only, median number of days between open date and close date for the previous 3 months',
@@ -37,16 +38,32 @@ with resolution_last_3_months as (
 
 )
 
-select
-    requests.agency
-    /* API docs say there is an open bug with agency_name, need to confirm behavior isn't causing fan-out */
-    , requests.agency_name
-    , coalesce(resolution_last_3_months.median_days_to_close::text, 'unknown') as median_days_to_close
-    , min(requests.created_date) as first_request_date
-    , max(requests.created_date) as most_recent_request_date
-    , count(*) as total_requests
+, metrics as (
 
-from staging.stg__service_requests as requests
-left join resolution_last_3_months on requests.agency = resolution_last_3_months.agency
-group by 1, 2, 3
+    select
+        requests.agency
+        , requests.agency_name
+        , coalesce(resolution_last_3_months.median_days_to_close::text, 'unknown') as median_days_to_close
+        , min(requests.created_date) as first_request_date
+        , max(requests.created_date) as most_recent_request_date
+        , count(*) as total_requests
+
+    from staging.stg__service_requests as requests
+    left join resolution_last_3_months on requests.agency = resolution_last_3_months.agency
+    group by 1, 2, 3
+
+)
+
+, final as (
+
+    select
+        /* Surrogate key */
+        @GENERATE_SURROGATE_KEY(metrics.agency) as agency_id
+        , metrics.*
+
+    from metrics
+
+)
+
+select * from final
 

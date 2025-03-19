@@ -1,14 +1,16 @@
 cubes:
   - name: hpd_complaints
-    sql_table: nyc_open_data.hpd_complaints
+    sql_table: staging.stg__housing_maintenance_code_complaints_and_problems
     data_source: default
 
     joins: []
 
     dimensions:
+
       - name: problem_id
         sql: problem_id
         type: string
+        primary_key: true
 
       - name: complaint_id
         sql: complaint_id
