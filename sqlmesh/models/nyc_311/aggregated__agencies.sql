@@ -58,8 +58,8 @@ with resolution_last_3_months as (
 
     select
         /* Surrogate key */
-        @GENERATE_SURROGATE_KEY(metrics.agency) as agency_id,
-        metrics.*
+        @GENERATE_SURROGATE_KEY(metrics.agency) as agency_id
+        , metrics.*
 
     from metrics
 
