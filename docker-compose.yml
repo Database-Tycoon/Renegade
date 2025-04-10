@@ -9,10 +9,13 @@ services:
       - ./cube/model:/cube/model
       - ./data:/data
     environment:
+      - CUBEJS_DB_TYPE=trino
+      - CUBEJS_DB_HOST=databasetycoon.galaxy.starburst.io
+      - CUBEJS_DB_USER=stephen@databasetycoon.com
+      - CUBEJS_DB_PASS=XJM7qap9rhe@dmd4xaz
+      - CUBEJS_DB_PRESTO_CATALOG=dbtycoon_renegade
+      - CUBEJS_DB_SCHEMA=nyc_open_data
       - CUBEJS_DEV_MODE=true
-      - CUBEJS_DB_TYPE=duckdb
-      - CUBEJS_SCHEMA_PATH=/cube/model
-      - CUBEJS_DB_DUCKDB_DATABASE_PATH=/data/nycdata.db # moved to dedicated data directory
 
   evidence:
     image: evidencedev/devenv:latest
