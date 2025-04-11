@@ -10,7 +10,7 @@ services:
       - CUBEJS_DEV_MODE=true
       - CUBEJS_DB_TYPE=trino
       - CUBEJS_DB_HOST=databasetycoon-free-cluster.trino.galaxy.starburst.io
-      - CUBEJS_DB_USER=stephen@databasetycoon.com/accountadmin
+      - CUBEJS_DB_USER=${STARBURST_CLUSTER_PARTNER_CONNECT_USER}
       - CUBEJS_DB_PASS=${STARBURST_CLUSTER_PASSWORD}
       - CUBEJS_DB_PRESTO_CATALOG=dbtycoon_renegade
       - CUBEJS_DB_NAME=dbt
