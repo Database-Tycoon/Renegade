@@ -14,7 +14,6 @@ services:
       - CUBEJS_DB_PASS=${STARBURST_CLUSTER_PASSWORD}
       - CUBEJS_DB_PRESTO_CATALOG=dbtycoon_renegade
       - CUBEJS_DB_NAME=dbt
-      - CUBEJS_DEV_MODE=true
 
   evidence:
     image: evidencedev/devenv:latest
