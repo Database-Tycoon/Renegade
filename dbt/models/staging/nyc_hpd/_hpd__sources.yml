@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: nyc_open_data
+    description: "NYC Open Data datasets"
+    tables:
+      - name: hpd_complaints
+        description: "Housing Preservation and Development (HPD) complaints"
+        meta:
+          external_location: "{{ env_var('S3_ICEBERG_PATH_PREFIX') }}/nyc_open_data/hpd_complaints"
+          file_format: iceberg 
