@@ -1,1 +1,1 @@
-select * from service_requests_agencies;
+select * from dbtycoon_renegade.dbt.aggregated__agencies
