@@ -1,9 +1,14 @@
 # This file was automatically generated
-type: postgres
+type: trino
 name: nycdata
+# Advanced Options, you probably don't want to change this
+buildOptions:
+  batchSize: 1000000
 options:
-  host: cube
-  port: 15432
-  database: cube
-  ssl: false
-  optional: true
+  catalog: dbtycoon_renegade
+  engine: trino
+  host: databasetycoon-free-cluster.trino.galaxy.starburst.io
+  port: 443
+  schema: dbt
+  ssl: true
+  user: stephen@databasetycoon.com/accountadmin
