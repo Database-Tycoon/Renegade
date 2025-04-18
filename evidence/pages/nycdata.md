@@ -91,4 +91,4 @@ group by 1, 2
     series=agency
     xAxisTitle='Month by Request Creation Date'
     yAxisTitle='Count of Requests'
-/>
+/> 
