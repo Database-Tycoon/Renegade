@@ -7,8 +7,9 @@ buildOptions:
 options:
   catalog: dbtycoon_renegade
   engine: trino
-  host: databasetycoon-free-cluster.trino.galaxy.starburst.io
-  port: 443
+  host: "{{ env_var('STARBURST_CLUSTER_URL') }}"
+  port: "{{ env_var('STARBURST_CLUSTER_PORT') | int }}"
   schema: dbt
   ssl: true
-  user: stephen@databasetycoon.com/accountadmin
+  user: "{{ env_var('STARBURST_CLUSTER_USER') }}"
+  password: "{{ env_var('STARBURST_CLUSTER_PASSWORD') }}"
