@@ -102,7 +102,13 @@ Are these buildings consistently high in problem count over time?
 select * from nycdata.hpd_problem_resolution_times
 where building_id like '${inputs.selected_building.value}'
 ```
-<DataTable data={resolution_times}/>
+<LineChart 
+    data={resolution_times}
+    x=year
+    y=median_days_to_resolution
+    series=building_address
+    title="Median Days to Complaint Closure"
+/>
 
 ## Appendix
 
