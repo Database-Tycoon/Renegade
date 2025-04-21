@@ -1,9 +1,6 @@
 # This file was automatically generated
 type: trino
 name: nycdata
-# Advanced Options, you probably don't want to change this
-buildOptions:
-  batchSize: 1000000
 options:
   catalog: dbtycoon_renegade
   engine: trino
@@ -13,3 +10,8 @@ options:
   ssl: true
   user: "{{ env_var('STARBURST_CLUSTER_USER') }}"
   password: "{{ env_var('STARBURST_CLUSTER_PASSWORD') }}"
+
+# Advanced Options, you probably don't want to change this
+buildOptions:
+  batchSize: 1000000
+
