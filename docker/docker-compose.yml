@@ -1,0 +1,32 @@
+services:
+  dlt:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dlt
+    # Environment variables will be loaded from .env file first
+    # Host environment variables will take precedence if provided
+    env_file: ../.env
+    
+
+  dbt:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dbt
+    # Environment variables will be loaded from .env file first
+    # Host environment variables will take precedence if provided
+    env_file: ../.env
+    working_dir: /app/dbt
+    
+  evidence:
+    image: evidencedev/devenv:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../evidence:/evidence
+    working_dir: /evidence
+    environment:
+      - NODE_ENV=development
+
+networks:
+  default:
+    name: renegade-network 

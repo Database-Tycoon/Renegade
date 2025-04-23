@@ -1,128 +1,213 @@
 # Renegade
 
+## Overview
+Renegade is a data engineering project for processing NYC Open Data using DLT (Data Load Tool), DBT (Data Build Tool), and Evidence for visualizations.
+
 ## Instructions
 
-1. Create a new virtual environment: 
+1. Create a new virtual environment using UV (recommended): 
 
+    ```bash
+    just setup-local
     ```
-    python -m venv .venv
-    source .venv/bin/activate
-    ```
-2. Install dependencies: 
 
-    ```
-    pip install -r requirements.txt
-    ```
+   This will:
+   - Create a virtual environment
+   - Install UV if not already installed
+   - Install dependencies using UV
+
+   *Alternatively, you can set up manually:*
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
 **Recommend using a version of python >= 3.8.1 and < 3.13 for compatibility with `dlt[filesystem]==1.5.0`.**  
 
-3. Configure Environment Variables:
-- Create a `.env` file in the root directory:
-    ```
-    cp env.example .env
-    ```
-- Update the following variables in `.env`:
-  - AWS credentials (if using S3)
-  - NYC Open Data app token (optional for development)
-  - Other environment-specific settings
+2. Configure Environment Variables:
+   - Create a `.env` file in the root directory:
+     ```bash
+     cp env.example .env
+     ```
+   - Update the following variables in `.env`:
+     - AWS credentials for S3 access:
+       ```
+       AWS_ACCESS_KEY_ID=your_access_key_id
+       AWS_SECRET_ACCESS_KEY=your_secret_access_key
+       AWS_DEFAULT_REGION="us-east-2"
+       S3_BUCKET_URL="s3://your-bucket-name/dlt/landing/"
+       ```
+     - DLT filesystem destination (automatically configured from the above variables):
+       ```
+       DESTINATION__FILESYSTEM__BUCKET_URL=${S3_BUCKET_URL}
+       DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+       DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+       DESTINATION__FILESYSTEM__CREDENTIALS__REGION_NAME=${AWS_DEFAULT_REGION}
+       ```
+     - NYC Open Data app token (optional for development)
+     - Other environment-specific settings
 
-4. (Optional) Configure DLT Secrets (if you configure the .env file, you don't need to do this step):
-- If you prefer using DLT's secrets.toml configuration:
-    ```
-    cd dlt
-    cp .dlt/secrets.example .dlt/secrets.toml
-    ```
-- Make sure the file is located in `Renegade/dlt/.dlt/secrets.toml`
-- Add secrets like aws credentials, nyc open data app token, etc.
-- You can change the `bucket_url` to your local directory for testing purposes. In which case, you don't need to specify the aws credentials.
+3. (Optional) Alternative Configuration with DLT Secrets:
+   - If you prefer using DLT's secrets.toml configuration instead of environment variables:
+     ```bash
+     cd dlt
+     cp .dlt/secrets.example .dlt/secrets.toml
+     ```
+   - Make sure the file is located in `Renegade/dlt/.dlt/secrets.toml`
+   - Update the S3 configuration in the secrets file:
+     ```toml
+     [destination.filesystem]
+     bucket_url = "s3://your-bucket-name/dlt/landing"
+     
+     [destination.filesystem.credentials]
+     aws_access_key_id = "YOUR_AWS_ACCESS_KEY_ID"
+     aws_secret_access_key = "YOUR_AWS_SECRET_ACCESS_KEY"
+     region_name = "us-east-2"
+     ```
+   - For local development without S3, you can change the `bucket_url` to a local directory path:
+     ```toml
+     [destination.filesystem]
+     bucket_url = "/path/to/local/directory"
+     ```
+     In this case, you don't need to specify the AWS credentials.
 
-5. Run the DLT Pipeline:
-- Navigate to the dlt directory:
-    ```
-    cd dlt
-    ```
-- By default, the following command will run the pipeline in incremental mode:
-    ```
-    python nyc_open_data_pipeline.py --current-month
-    ```
-- For historical data backfill:
-    ```
-    python nyc_open_data_pipeline.py --backfill
-    ```
-- For specific date ranges:
-    ```
-    python nyc_open_data_pipeline.py --start-date YYYY-MM-DD --end-date YYYY-MM-DD
-    ```
+## Development Workflow Using Just Commands
 
-6. Check pipeline info:
-    ```
-    dlt pipeline nyc_open_data_pipeline info
-    ``` 
-    or 
-    ```
-    dlt pipeline nyc_open_data_pipeline show
-    ``` 
-    to use streamlit
+This project uses [Just](https://github.com/casey/just) as a command runner to simplify common operations.
 
-## SQLMesh
+### Just Installation
 
-[SQLMesh](https://sqlmesh.com/) is used for data transformation and modeling. To run the SQLMesh portion:
+```bash
+# macOS
+brew install just
 
-1. Ensure you have the DLT pipeline data loaded (either locally or in S3)
+# Linux
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash
 
-2. Navigate to the sqlmesh directory:
-    ```
-    cd sqlmesh
-    ```
+# Windows (with Chocolatey)
+choco install just
+```
 
-3. Run SQLMesh in dev mode to plan the changes:
-    ```
-    sqlmesh plan dev
-    ```
-   This will create the transformed tables in your configured data warehouse.
-4. Run SQLMesh in prod mode to apply the changes:
-    ```
-    sqlmesh plan prod
-    ```
+### Available Just Commands
 
-5. To view the model documentation and lineage:
-    ```
-    sqlmesh ui
-    ```
-   This will start the SQLMesh UI at `localhost:8000`
+To see all available commands:
+```bash
+just
+```
+
+Common commands:
+
+1. **Local Development (Recommended Workflow):**
+
+   ```bash
+   # Set up local environment with UV
+   just setup-local
+   
+   # Start Evidence visualization server
+   just up-evidence
+   
+   # Run DLT pipeline locally
+   just dlt-local --current-month
+   
+   # Run DBT models locally
+   just dbt-local run
+   ```
+
+2. **Container-based Development:**
+
+   ```bash
+   # Build all containers
+   just build
+   
+   # Run DLT pipeline in container
+   just dlt-container --current-month
+   
+   # Run DBT in container
+   just dbt-container run
+   
+   # Start only Evidence container
+   just up-evidence
+   
+   # Stop all containers
+   just down
+   
+   # Clean up Docker resources
+   just clean
+   ```
+
+### Running DLT Pipeline
+
+Local development:
+```bash
+# Run for current month
+just dlt-local --current-month
+
+# Run with backfill
+just dlt-local --backfill
+
+# Run for specific date range
+just dlt-local --start-date YYYY-MM-DD --end-date YYYY-MM-DD
+```
+
+Container execution:
+```bash
+# Same parameters as above
+just dlt-container --current-month
+```
+
+To check pipeline info:
+```bash
+cd dlt
+dlt pipeline nyc_open_data_pipeline info
+```
+or use the streamlit interface:
+```bash
+cd dlt
+dlt pipeline nyc_open_data_pipeline show
+```
+
+## Docker Setup
+
+The project includes Docker configurations for all components. Docker-related files are organized in the `docker/` directory.
+
+### Docker File Structure
+
+```
+Renegade/
+├── docker/
+│   ├── Dockerfile.dlt       # Dockerfile for DLT service
+│   ├── Dockerfile.dbt       # Dockerfile for DBT service
+│   └── docker-compose.yml   # Docker composition for all services
+├── dlt/                     # DLT source code
+├── dbt/                     # DBT source code
+├── evidence/                # Evidence source code
+└── justfile                 # Just commands
+```
+
+### Prerequisites
+
+- Docker installed on your machine
+- Configured `.env` file in the project root
+
+### Environment Configuration
+
+When running in Docker:
+- Environment variables are loaded from the `.env` file
+- Host environment variables take precedence if provided
+- For production environments, ensure your S3 bucket and AWS credentials are correctly configured
 
 ## Evidence
-[Evidence](https://evidence.dev/) is a lightweight BI tool used to make visualizations.
 
-To view the markdown files in this repo, you need to:
-1. Have Docker installed and running on your machine.
-2. Have run sqlmesh and generated the models/data in your `nycdata.db` file.
-3. Run `docker compose up evidence` to spin up the server.
+[Evidence](https://evidence.dev/) is a lightweight BI tool used to create visualizations.
 
-This should spin up the server at `localhost:3000` and show Evidence's `index.md` page.  
+To view the Evidence visualizations:
 
-Refer to the [official documentation](https://docs.evidence.dev/) for more information.
+1. Start the Evidence container:
+   ```bash
+   just up-evidence
+   ```
 
-## Cube
-[Cube](https://cube.dev/) is a universal semantic layering platform.
+2. Access the Evidence dashboard at `http://localhost:3000`
 
-[Here](https://cube.dev/docs/product/getting-started/core/create-a-project) is the official documentation to get started with Cube.
-
-Renegade already has a cube project folder containing basic configurations and model cubes for the NYC Open Data dataset as a duckdb source. Please note you will need to have Docker installed and running on your machine. 
-
-If you're running the project locally, here's how to get started:
-1. Run the nyc_open_data_pipeline.py script with duckdb as the destination to generate some data in the nyc_open_data_pipeline.duckdb file in the RENEGADE root directory.
-2. run `docker compose up cube` to start the cube server.
-3. navigate to `localhost:4000` in your browser to view the cube dashboard.
-
-And that's it! You can edit the models from the cube dashboard and the changes you make will be reflected in the `cube/model` directory, or you can edit the files directly in `cube/model`.
-
-To set the project up to use source data stored in s3, you will need to configure the `cube/.env` file with the appropriate AWS credentials and bucket url.
-1. Create a `.env` file in the cube directory.
-2. Add the following to the `.env` file:
-```
-CUBEJS_DB_DUCKDB_S3_ACCESS_KEY_ID=[your_aws_access_key_id]
-CUBEJS_DB_DUCKDB_S3_SECRET_ACCESS_KEY=[your_aws_secret_access_key]
-CUBEJS_DB_DUCKDB_S3_ENDPOINT=[s3_endpoint]
-CUBEJS_DB_DUCKDB_S3_REGION=[s3_region]
-```
-3. Update the `CUBEJS_DB_DUCKDB_DATABASE_PATH` environment variable in the docker-compose.yml file to reflect the s3 path to the nyc_open_data_pipeline.duckdb file.
+Refer to the [official Evidence documentation](https://docs.evidence.dev/) for more information.
