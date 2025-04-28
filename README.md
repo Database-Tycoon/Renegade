@@ -180,7 +180,7 @@ Renegade/
 │   ├── Dockerfile.dbt       # Dockerfile for dbt service
 │   └── docker-compose.yml   # Docker composition for all services
 ├── dlt/                     # DLT source code
-├── dbt/                     # DBT source code
+├── dbt/                     # dbt source code
 ├── evidence/                # Evidence source code
 └── justfile                 # Just commands
 ```
