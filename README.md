@@ -1,7 +1,7 @@
 # Renegade
 
 ## Overview
-Renegade is a data engineering project for processing NYC Open Data using DLT (Data Load Tool), DBT (Data Build Tool), and Evidence for visualizations.
+Renegade is a data engineering project for enabling a local and portable data pipeline. It currently processes NYC Open Data sources using dlt (Data Load Tool), dbt (Data Build Tool), and Evidence for visualizations.
 
 ## Instructions
 
