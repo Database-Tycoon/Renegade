@@ -35,8 +35,8 @@ Renegade is a data engineering project for enabling a local and portable data pi
        ```
        AWS_ACCESS_KEY_ID=your_access_key_id
        AWS_SECRET_ACCESS_KEY=your_secret_access_key
-       AWS_DEFAULT_REGION="us-east-2"
-       S3_BUCKET_URL="s3://your-bucket-name/dlt/landing/"
+       AWS_DEFAULT_REGION=us-east-2
+       S3_BUCKET_URL=s3://your-bucket-name/dlt/landing/
        ```
      - DLT filesystem destination (automatically configured from the above variables):
        ```
