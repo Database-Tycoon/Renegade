@@ -45,7 +45,7 @@ Renegade is a data engineering project for enabling a local and portable data pi
        DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
        DESTINATION__FILESYSTEM__CREDENTIALS__REGION_NAME=${AWS_DEFAULT_REGION}
        ```
-     - NYC Open Data app token (optional for development)
+     - [NYC Open Data app token](https://support.socrata.com/hc/en-us/articles/210138558-Generating-App-Tokens-and-API-Keys) (optional for development)
      - Other environment-specific settings
 
 3. (Optional) Alternative Configuration with DLT Secrets:
