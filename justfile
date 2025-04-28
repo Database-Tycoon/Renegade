@@ -52,7 +52,7 @@ dbt-container *ARGS:
     docker compose -f docker/docker-compose.yml up -d dbt
     docker compose -f docker/docker-compose.yml exec -T -w /app/dbt dbt uv run dbt {{ARGS}}
     docker compose -f docker/docker-compose.yml stop dbt
-    @echo "✅ DBT process completed"
+    @echo "✅ dbt process completed"
 
 # Deploy to production - customize this for your deployment environment
 deploy-prod:
