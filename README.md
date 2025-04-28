@@ -177,7 +177,7 @@ The project includes Docker configurations for all components. Docker-related fi
 Renegade/
 ├── docker/
 │   ├── Dockerfile.dlt       # Dockerfile for DLT service
-│   ├── Dockerfile.dbt       # Dockerfile for DBT service
+│   ├── Dockerfile.dbt       # Dockerfile for dbt service
 │   └── docker-compose.yml   # Docker composition for all services
 ├── dlt/                     # DLT source code
 ├── dbt/                     # DBT source code
