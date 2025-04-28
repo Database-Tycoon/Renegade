@@ -48,7 +48,7 @@ dlt-container *ARGS:
 
 # Run DBT in production container
 dbt-container *ARGS:
-    @echo "Running DBT in container..."
+    @echo "Running dbt in container..."
     docker compose -f docker/docker-compose.yml up -d dbt
     docker compose -f docker/docker-compose.yml exec -T -w /app/dbt dbt uv run dbt {{ARGS}}
     docker compose -f docker/docker-compose.yml stop dbt
