@@ -26,7 +26,7 @@ dlt-local *ARGS:
 
 # Run DBT locally with uv
 dbt-local *ARGS:
-    cd dbt && uv run dbt {{ARGS}}
+    cd dbt && uv run dbt deps && uv run dbt {{ARGS}}
 
 # Build all containers
 build:
@@ -50,7 +50,7 @@ dlt-container *ARGS:
 dbt-container *ARGS:
     @echo "Running dbt in container..."
     docker compose -f docker/docker-compose.yml up -d dbt
-    docker compose -f docker/docker-compose.yml exec -T -w /app/dbt dbt uv run dbt {{ARGS}}
+    docker compose -f docker/docker-compose.yml exec -T -w /app/dbt dbt sh -c "uv run dbt deps && uv run dbt {{ARGS}}"
     docker compose -f docker/docker-compose.yml stop dbt
     @echo "✅ dbt process completed"
 
