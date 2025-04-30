@@ -1,9 +1,17 @@
 # This file was automatically generated
-type: postgres
+type: trino
 name: nycdata
 options:
-  host: cube
-  port: 15432
-  database: cube
-  ssl: false
-  optional: true
+  catalog: dbtycoon_renegade
+  engine: trino
+  host: "{{ env_var('STARBURST_CLUSTER_URL') }}"
+  port: "{{ env_var('STARBURST_CLUSTER_PORT') | int }}"
+  schema: dbt
+  ssl: true
+  user: "{{ env_var('STARBURST_CLUSTER_USER') }}"
+  password: "{{ env_var('STARBURST_CLUSTER_PASSWORD') }}"
+
+# Advanced Options, you probably don't want to change this
+buildOptions:
+  batchSize: 1000000
+
