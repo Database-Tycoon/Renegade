@@ -1,7 +1,12 @@
 # Renegade
 
 ## Overview
-Renegade is a data engineering project for enabling a local and portable data pipeline. It currently processes NYC Open Data sources using dlt (Data Load Tool), dbt (Data Build Tool), and Evidence for visualizations.
+Project Renegade is a "portable" data stack, and it can be run anywhere you can run a python script. The goal of the project is to implement open source tools for common data processing, analysis, and visualization tasks, without any reliance on running servers.
+
+In our POC/version 1 phase, we're processing several NYC Open Data sources and serving visualizations in Evidence.
+
+## Architecture Overview
+![Current Project Renegade architecture diagram](images/renegade-diagram-v1.png)
 
 ## Instructions
 
