@@ -6,7 +6,7 @@ Project Renegade is a "portable" data stack, and it can be run anywhere you can 
 In our POC/version 1 phase, we're processing several NYC Open Data sources and serving visualizations in Evidence.
 
 ## Architecture Overview
-[images/renegade-diagram-v1.png]
+![Current Project Renegade architecture diagram](images/renegade-diagram-v1.png)
 
 ## Instructions
 
